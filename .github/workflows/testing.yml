@@ -1,0 +1,39 @@
+name: Testing Environment
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+  repository_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run unit tests
+      run: |
+        python -m unittest discover
+
+    - name: Run functional tests
+      run: |
+        python functional_tests.py
+
+    - name: Run non-functional tests
+      run: |
+        python non_functional_tests.py
