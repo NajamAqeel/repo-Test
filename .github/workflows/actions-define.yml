@@ -1,0 +1,80 @@
+
+name: Simple Manual Workflow - Three Env
+
+on:
+ pull_request:
+ push:
+   branches:
+     - master
+     - main
+     - QA
+     - DEV
+ 
+ 
+ workflow_dispatch:
+  
+jobs:
+
+    DEV: 
+      
+      name: Development Env
+      runs-on: ubuntu-latest
+      environment: DEV
+      
+      
+      steps:
+      
+        - uses: actions/checkout@v2
+#        - name: Run a script
+        - name: Set up Python 3.8
+          uses: actions/setup-python@v3
+          with:
+            python-version: '3.8'
+      #...........
+        - name: Add conda to system path
+          run: |
+            # $CONDA is an environment variable pointing to the root of the miniconda directory
+            echo $CONDA/bin >> $GITHUB_PATH
+            
+        - name: Lint with flake8
+          run: |
+            conda install flake8
+            # stop the build if there are Python syntax errors or undefined names
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+            # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+            flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        - name: Test with pytest
+          run: |
+            conda install pytest
+
+         #..........
+    QA:
+        
+        name: Running Unit Test
+        runs-on: ubuntu-latest
+        environment: QA
+       
+        
+        
+        steps:
+          - uses: actions/checkout@v2
+          - name: Run a script
+            run:
+               echo " I'm running a job in the QA enviornment"
+                  
+            
+            
+    PROD:
+        
+        name: Poduction 
+        runs-on: ubuntu-latest
+        environment: PROD
+       
+        
+        steps:
+          - uses: actions/checkout@v2
+          - name: Run a script
+            run:
+               echo " I'm running a job in the PROD enviornment"
+            
+      
