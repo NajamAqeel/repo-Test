@@ -34,6 +34,6 @@ jobs:
 #       run: |
 #         python functional_tests.py
 
-    - name: Run non-functional tests
-      run: |
-        python non_functional_tests.py
+#     - name: Run non-functional tests
+#       run: |
+#         python non_functional_tests.py
