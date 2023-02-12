@@ -1,0 +1,21 @@
+name: Merge Environment
+
+on: 
+  pull_request:
+    types: [closed]
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Add Reviewer
+      uses: samsarahq/action-add-reviewer@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        reviewers: |
+          reviewer1
+          reviewer2
